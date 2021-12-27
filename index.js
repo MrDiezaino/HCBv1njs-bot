@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const db = require("megadb");
+let prefix_db = new db.crearDB("prefixes")
 const token = process.env['token']
 
 // Command Handler
@@ -30,8 +32,7 @@ client.on("message", async message => {
 
     if (message.author.bot) return;
 
-
-let prefix =  "!"
+let prefix = prefix_db.tiene(`${message.guild.id}`) ? await prefix_db.obtener(`${message.guild.id}`) : "!"
 
 let args = message.content.slice(prefix.length).trim().split(/ +/g)
 let command = args.shift().toLowerCase();
