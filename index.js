@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const db = require("megadb");
 let prefix_db = new db.crearDB("prefixes")
+let inventario = new db.crearDB('inventario');
 const token = process.env['token']
 
 // Command Handler
@@ -32,6 +33,7 @@ client.on("message", async message => {
 
     if (message.author.bot) return;
 
+// Si tiene un prefix custom, lo usa. Si no, usa el default que es "!"
 let prefix = prefix_db.tiene(`${message.guild.id}`) ? await prefix_db.obtener(`${message.guild.id}`) : "!"
 
 let args = message.content.slice(prefix.length).trim().split(/ +/g)
@@ -45,5 +47,5 @@ if (cmd) {
 }
 
 });
- 
+
  client.login(token);
